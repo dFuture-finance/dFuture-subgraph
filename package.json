@@ -1,0 +1,27 @@
+{
+  "name": "dfuture",
+  "version": "0.1.1",
+  "scripts": {
+    "codegen": "graph codegen --output-dir src/types/",
+    "build": "graph build",
+
+    "create-local": "graph create dfuture/multisym --node http://127.0.0.1:8020",
+    "deploy-local": "graph deploy dfuture/multisym --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
+
+    "create-test": "graph create dfuture/multisym --node http://172.16.10.8:8020",
+    "deploy-test": "graph deploy dfuture/multisym --ipfs http://172.16.10.8:5001 --node http://172.16.10.8:8020"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.0"
+  },
+  "dependencies": {
+    "apollo-fetch": "^0.7.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "truffle": "^5.0.4",
+    "truffle-contract": "^4.0.5",
+    "truffle-hdwallet-provider": "^1.0.4",
+    "web3": "^1.3.4"
+  }
+}

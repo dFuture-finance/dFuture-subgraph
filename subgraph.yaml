@@ -1,0 +1,164 @@
+specVersion: 0.0.2
+description: dFuture
+repository: https://github.com/dFuture-finance/dFuture-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: dFutureCore
+    network: mainnet
+    source:
+      address: '0xc67eC5cbcE3E9aB546CF6077Dd2ad519887737BA'
+      abi: FuturePerpetual
+      startBlock: 5261249
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dfuture.ts
+      entities:
+        - PoolInfo
+      abis:
+        - name: FuturePerpetual
+          file: ./abis/FuturePerpetual.json
+      eventHandlers:
+        - event: OpenPosition(indexed address,bytes32,uint256,uint256,int8,int256,uint256)
+          handler: handleOpenPosition
+        - event: ClosePosition(indexed address,bytes32,uint256,int8,uint256,int256,int256,uint256,bool)
+          handler: handleClosePosition
+        - event: FeeInterestRewards(indexed address,uint256[2])
+          handler: handleFeeInterestRewards
+        - event: SettleHolderInterest(indexed address,bytes32,uint256,uint256,int256)
+          handler: handleSettleHolderInterest
+        - event: ForceClosePosition(indexed address,bytes32,uint256,uint256,uint256,int8,uint256,uint256,uint256,indexed address,uint256)
+          handler: handleForceClosePositionNew
+        - event: ForceClosePosition(indexed address,bytes32,uint256,uint256,uint256,int8,uint256,uint256,uint256,address,uint256)
+          handler: handleForceClosePosition
+        - event: DepositToPool(indexed address,uint256,uint256)
+          handler: handleDepositToPool
+        - event: WithdrawFromPool(indexed address,uint256,uint256)
+          handler: handleWithdrawFromPool
+        - event: DistributeLpFees(uint256,uint256)
+          handler: handleDistributeLpFees
+        - event: SubTieredPosition(indexed address,bytes32,uint256,uint256,uint256)
+          handler: handleSubTieredPosition
+        - event: Deposit(indexed address,bytes32,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,bytes32,uint256)
+          handler: handleWithdraw
+        - event: OpenPositionApprovedUsdt(indexed address,uint256)
+          handler: handleOpenPositionApprovedUsdt
+  - kind: ethereum/contract
+    name: dFutureLptw
+    network: mainnet
+    source:
+      address: '0xF59D805fbaEb5aF7f68aDecc3791A5Db3Dc24f36'
+      abi: LpTokenWrapper
+      startBlock: 5261249
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/lptw.ts
+      entities:
+        - PoolInfo
+      abis:
+        - name: LpTokenWrapper
+          file: ./abis/LpTokenWrapper.json
+      eventHandlers:
+        - event: RewardNotify(indexed address,indexed uint256,uint256,uint256)
+          handler: handleRewardNotify
+        - event: Relation(indexed address,indexed address)
+          handler: handleRelation
+        - event: RelationArray(address[],address[])
+          handler: handleRelationArray
+        - event: AddAccelerate(indexed address,uint256)
+          handler: handleAddAccelerate
+        - event: RemoveAccelerate(indexed address,uint256,uint256)
+          handler: handleRemoveAccelerate
+        - event: StakeDToken(indexed address,uint256)
+          handler: handleStakeDToken
+        - event: UnstakeDToken(indexed address,uint256)
+          handler: handleUnstakeDToken
+        - event: TradingMint(address[3],uint256[3])
+          handler: handleTradingMint
+        - event: StakeUni(indexed address,uint256,uint256)
+          handler: handleStakeUni
+        - event: UnstakeUni(indexed address,uint256,uint256)
+          handler: handleUnstakeUni
+  - kind: ethereum/contract
+    name: dFutureNFT
+    network: mainnet
+    source:
+      address: '0x2D375f64dD01BC9c31ed566dAdDc0D4A58CFb5CF'
+      abi: FpCoupon
+      startBlock: 9084330
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/coupon.ts
+      entities:
+        - FpCoupon
+      abis:
+        - name: FpCoupon
+          file: ./abis/FpCoupon.json
+      eventHandlers:
+        - event: CouponBatchMinted(indexed address,indexed address,uint256[],uint256[],uint256[],bytes32[],bytes32)
+          handler: handleCouponBatchMinted
+        - event: CouponTransfered(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleCouponTransfered
+        - event: CouponUsed(indexed address,uint256,uint256)
+          handler: handleCouponUsed
+        - event: LuckyBoxMinted(indexed address,uint256,uint8)
+          handler: handleLuckyBoxMinted
+        - event: LuckyBoxOpened(indexed address,uint256,uint256)
+          handler: handleLuckyBoxOpened
+        - event: LuckyBoxTransfered(indexed address,indexed address,uint256[],uint256[])
+          handler: handleLuckyBoxTransfered
+  - kind: ethereum/contract
+    name: dFutureERC1155
+    network: mainnet
+    source:
+      address: '0x7cbB69C8Dc7B5DC649E2f4573612AfeCDF45331B'
+      abi: FpERC1155
+      startBlock: 9084330
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/erc1155.ts
+      entities:
+        - FpERC1155
+      abis:
+        - name: FpERC1155
+          file: ./abis/FpERC1155.json
+      eventHandlers:
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+  - kind: ethereum/contract
+    name: dFutureDAO
+    network: mainnet
+    source:
+      address: '0x3680948af7fFD2D041546AB673E21E7A2bdEBEa5'
+      abi: GovernorAlpha
+      startBlock: 9982951
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dao.ts
+      entities:
+        - VoteCastRecord
+      abis:
+        - name: GovernorAlpha
+          file: ./abis/GovernorAlpha.json
+      eventHandlers:
+        - event: VoteCast(indexed address,uint256,bool,uint256)
+          handler: handleVoteCast
+        - event: GovernorJoin(indexed address)
+          handler: handleGovernorJoin
+        - event: GovernorExit(indexed address)
+          handler: handleGovernorExit

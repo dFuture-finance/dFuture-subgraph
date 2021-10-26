@@ -1,0 +1,591 @@
+# Records for open position
+type OpenPosRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  price: BigInt!
+  direction: BigInt!
+  fee: BigInt!
+  timestamp: BigInt!
+  blknum: BigInt!
+  date: Int!
+  tokenId: BigInt
+  nftAmount: BigInt
+}
+
+type OpenPosApprovedUsdtRecord @entity {
+  id: ID!
+  who: Bytes!
+  amount: BigInt!
+  blknum: BigInt!
+}
+
+# Records for close position
+type ClosePosRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  direction: BigInt!
+  price: BigInt!
+  profit: BigInt!
+  fee: BigInt!
+  timestamp: BigInt!
+  isClear: Boolean!
+  blknum: BigInt!
+  date: Int!
+  isSubTiered: Boolean!
+  tokenId: BigInt
+  nftAmount: BigInt
+}
+
+type SubTieredPositionRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  beforeCloseAmount: BigInt!
+  closeAmount: BigInt!
+  timestamp: BigInt!
+  blknum: BigInt!
+}
+
+# Records for force close position
+type ForceClosePosRecord @entity {
+  id: ID!
+  holder: Bytes!
+  symbol: String!
+  closedAmount: BigInt!
+  openPrice: BigInt!
+  closePrice: BigInt!
+  direction: Int!
+  ratio: BigInt!
+  triggerGot: BigInt!
+  poolGot: BigInt!
+  liquidator: Bytes!
+  timestamp: BigInt!
+  blknum: BigInt!
+  date: Int!
+}
+
+type allPosition @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  price: BigInt!
+  direction: BigInt!
+  fee: BigInt!
+  profit: BigInt!
+  cash: BigInt!
+  timestamp: BigInt!
+  blknum: BigInt!
+  isSubTiered: Boolean!
+  tokenId: BigInt
+  nftAmount: BigInt
+  postype: Int!  #open 1,close 2,force 3类别
+}
+
+#每小时记录
+type HourPosition @entity {
+  id: ID!
+  symbol: String!
+  hour: Int!
+  openAmount: BigInt!
+  openAsset: BigInt!
+  closeAmount: BigInt!
+  closeAsset: BigInt!
+}
+
+#过去24小时统计值
+type Last24HourPosition @entity {
+  id: ID!
+  symbol: String!
+  starthour: Int!
+  HourPositionMax: Int!
+  openAmount: BigInt! #24hour
+  openAsset: BigInt!
+  closeAmount: BigInt!
+  closeAsset: BigInt!
+}
+
+type GlobalParam @entity {
+  id: ID!
+  recentposnext: Int!
+  recentposmax: Int!
+}
+#
+type RecentPosRecord @entity {
+  id: ID!
+  symbol: String!
+  amount: BigInt!
+  price: BigInt!
+  timestamp: BigInt!
+  direction: BigInt!
+  postype: Int!  #open 1,close 2,force 3类别
+}
+
+# Daily position data
+type PositionDayData @entity {
+  id: ID!
+  date: Int!
+  symbol: String!
+  openAmount: BigInt!
+  openAsset: BigInt!
+  closeAmount: BigInt!
+  closeAsset: BigInt!
+}
+
+type HolderInterest @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  startIndex: BigInt!
+  endIndex: BigInt!
+  interest: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type CurrentHolderInfo @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  currentAccFee: BigInt!
+  currentAccInt: BigInt!
+  totalAccFee: BigInt!
+  totalAccInt: BigInt!
+  totalAccProfit: BigInt!
+}
+
+type HolderInfoDayData @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  date: Int!
+  totalAccFee: BigInt!
+  totalAccInt: BigInt!
+  totalAccProfit: BigInt!
+}
+
+# record all accumulated close position profit data
+type TotalTradeData @entity {
+  id: ID!
+  symbol: String!
+  totalAccProfit: BigInt!
+  totalOpenAmount: BigInt!
+  totalCloseAmount: BigInt!
+}
+
+# Hour close position profit
+type ClosePosProfitHourData @entity{
+  id: ID!
+  hourStartUnix: Int! # unix timestamp for start of hour
+  hourAccProfit: BigInt!
+}
+
+# record all reward data
+type TotalFeeIntFomo @entity{
+  id: ID!
+  totalFee: BigInt!
+  totalInt: BigInt!
+  totalFomoUsdt: BigInt!
+  totalFomoDft: BigInt!
+}
+
+# hour data for fee interest reward
+type FeeIntRwdDayData @entity {
+  id: ID!
+  date: Int!
+  dayAccFee: BigInt!
+  dayAccInt: BigInt!
+  tillYesterdayAccFee: BigInt!
+  tillYesterdayAccInt: BigInt!
+}
+
+# AccUsdtReward per trader
+type AccUsdtDftReward @entity {
+  id: ID!
+  who: Bytes!
+  totalPoolFeeInt: BigInt!
+  usdtAmount: BigInt!
+  dftAmount: BigInt!
+  fomoUsdt: BigInt!
+  fomoDft: BigInt!
+  totalProfit: BigInt!
+  posFee:BigInt!
+  interest:BigInt!
+  lpPoolDft: BigInt!
+  uni: BigInt!
+  dftStakeUsdt: BigInt!
+}
+
+type AccRewardDayData @entity {
+  id: ID!
+  who: Bytes!
+  date: Int!
+  Profit: BigInt!
+  posFee:BigInt!
+  interest:BigInt!
+  lpPoolDft: BigInt!
+  dftStakeUsdt: BigInt!
+  totalPoolFeeInt: BigInt!
+}
+
+type AccReward @entity {
+  id: ID!
+  dftStakeUsdt: BigInt!
+}
+
+type LpFee @entity {
+  id: ID!
+  shareFee: BigInt!
+  shareInterest: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt! 
+}
+
+# Fee Interest Fomo reward per trader
+type FeeIntFomoRwdRecord @entity {
+  id: ID!
+  who: Bytes!
+  amount: [BigInt!]!
+  blknum: BigInt!
+}
+
+# Pool usdt/dft/fomo reward per trader
+type PoolUsdtDftRwdRecord @entity {
+  id: ID!
+  who: Bytes!
+  amount: BigInt!
+  poolIndex: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+  type: BigInt!
+}
+
+type Swap @entity {
+  # transaction hash
+  id: ID!
+  timestamp: BigInt! 
+  blknum: BigInt!
+
+  # populated from the Swap event
+  sender: Bytes!
+  amount0In: BigInt!
+  amount1In: BigInt!
+  amount0Out: BigInt!
+  amount1Out: BigInt!
+  to: Bytes!
+}
+
+type DftLPTokenInfo @entity {
+  id: ID!
+  price: BigDecimal!
+  mdexLpAPY: BigDecimal!
+  blknum: BigInt!
+}
+
+type DftPriceDayData @entity {
+  id: ID!
+  date: Int!
+  price: BigDecimal!
+}
+
+#LP provider
+type DepositWithDraw @entity {
+  id: ID!
+  who: Bytes!
+  usdtAmount: BigInt!
+  lptAmount: BigInt!
+  lptRatio: BigInt!
+  blknum: BigInt!
+}
+
+type TraderInfo @entity {
+  id: ID!
+  who: Bytes!
+  accDepoitToPool: BigInt!
+  acclptRatio: BigInt!
+  accWithdrawFromPool: BigInt!
+  acclptAmount: BigInt!
+  currentPoolAmount: BigDecimal!
+}
+
+type TraderInfoDayData @entity {
+  id: ID!
+  who: Bytes!
+  date: Int!
+  DepoitToPool: BigInt!
+  lptRatio: BigInt!
+  WithdrawFromPool: BigInt!
+  lptAmount: BigInt!
+  currentPoolAmount: BigDecimal!
+}
+
+type TradingMintRecord @entity {
+  id: ID!
+  who: [Bytes!]
+  amount: [BigInt!]
+  timestamp: BigInt!
+  blknum: BigInt!
+}
+type TradingMintAmount @entity {
+  id: ID!
+  total: BigInt!
+  amount: BigInt!
+  rebateamount: BigInt!
+  accamount: BigInt!
+  accrebateamount: BigInt!
+}
+
+type LpStake @entity {
+  id: ID!
+  who: Bytes!
+  Amount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+  fee: BigInt!
+  Staketype:Int!  #USDT deposit 1,withdraw 2,DFT acc 3,remove acc 4
+}
+
+type DftStake @entity {
+  id: ID!
+  who: Bytes!
+  Amount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+  Staketype:Int!  #DFT deposit 1,withdraw 2
+}
+
+type HolderUniReward @entity {
+  id: ID!
+  who: Bytes!
+  pool: BigInt!
+  dft: BigInt!
+  usdt: BigInt!
+}
+
+type Uni @entity {
+  id: ID!
+  who: Bytes!
+  Amount: BigInt!
+  poolIndex: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+  Staketype:Int!  #uni deposit 1,un uni 2
+}
+
+type AccUni @entity {
+  id: ID!
+  amount: BigInt!
+}
+
+type StakeHolder @entity {
+  id: ID!
+  dftrows: Int!
+  lprows: Int!
+  unirows: Int!
+  unixrows: Int!
+}
+
+type RelationRecord @entity {
+  id: ID!
+  child: Bytes!
+  parent: Bytes!
+  blknum: BigInt!
+  timestamp: BigInt!
+  date: Int!
+}
+
+type SetRelation @entity {
+  id: ID!
+  child: [Bytes!]
+  parent: [Bytes!]
+  blknum: BigInt!
+  timestamp: BigInt!
+  date: Int!
+}
+
+type HolderOpenPosDayData @entity {
+  id: ID!
+  who: Bytes!
+  amount: BigInt!
+  openamount: BigInt!
+  closeamount: BigInt!
+  date: Int!
+}
+type HolderPosData @entity {
+  id: ID!
+  who: Bytes!
+  amount: BigInt!
+  rebateamount: BigInt!
+}
+type PlatformData @entity {
+  id: ID!
+  holderpos: BigInt!
+  TradingMintAmountRows: Int!
+}
+
+type PartnerCollectDayData @entity {
+  id: ID!
+  date: Int!
+  relations: BigInt!
+  openPos: BigInt!
+  openPosAmount: BigInt!
+  closePos: BigInt!
+  closePosAmount: BigInt!
+}
+
+type FomoDayData @entity {
+  id: ID!
+  who: Bytes!
+  date: Int!
+  amount: BigInt!
+}
+
+type DepositRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  blknum: BigInt!
+}
+
+type WithdrawRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  blknum: BigInt!
+}
+
+type DepositWithdrawRecord @entity {
+  id: ID!
+  who: Bytes!
+  symbol: String!
+  amount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+  recordType: Int! #deposit 1, withdraw 2
+}
+
+type CouponBatchMintedRecord @entity {
+  id: ID!
+  minter: Bytes!
+  to: Bytes!
+  tokenId: BigInt!
+  amount: BigInt!
+  datae: BigInt!
+  label: String!
+  minthash: String!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type CouponUsedRecord @entity {
+  id: ID!
+  owner: Bytes!
+  tokenId: BigInt!
+  amount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type CouponTransferedRecord @entity {
+  id: ID!
+  who: Bytes!
+  from: Bytes!
+  to: Bytes!
+  tokenId: BigInt!
+  amount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type TraderRecordsCnt @entity {
+  id: ID!
+  who: Bytes!
+  allPosCnt:     BigInt!
+  closePosCnt:   BigInt!
+  openPosCnt:    BigInt!
+  forceCloseCnt: BigInt!
+  posReduceCnt:   BigInt!
+  depositRecCnt:  BigInt!
+  withdrawRecCnt: BigInt!
+  depositWithdrawRecCnt: BigInt!
+  couponBatchMintCnt: BigInt!
+  couponTransferCnt: BigInt!
+  couponUsedCnt: BigInt!
+  luckyBoxRecvCnt: BigInt!
+  luckyBoxOpenCnt: BigInt!
+  luckyBoxSendCnt: BigInt!
+}
+
+type NftUserRec @entity {
+  id: ID!
+  who: Bytes!
+  couponCounts: [CouponCount!] @derivedFrom(field: "who")
+}
+
+type CouponCount @entity {
+  id: ID!
+  who: NftUserRec!
+  tokenId: BigInt!
+  couponHoldCnt: BigInt!
+}
+
+# include minted and transfered to 
+type LuckyBoxReceive @entity {
+  id: ID!
+  who: Bytes!
+  boxId: BigInt!
+  boxAmount: BigInt!
+  reason: Int!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type LuckyBoxOpen @entity {
+  id: ID!
+  who: Bytes!
+  boxId: BigInt!
+  mintedCouponId: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type LuckyBoxSend @entity {
+  id: ID!
+  who: Bytes!
+  to: Bytes!
+  boxId: BigInt!
+  boxAmount: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type VoteCastRecord @entity {
+  id: ID!
+  voter: Bytes!
+  proposalId: BigInt!
+  support: Boolean!
+  votes: BigInt!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
+
+type VoteCastData @entity {
+  id: ID!
+  proposalId: BigInt!
+  voteCastCnt: BigInt!
+}
+
+#type 1:join 2:exit
+type GovJoinExitRecord @entity{
+  id: ID!
+  voter: Bytes!
+  type: Int!
+  blknum: BigInt!
+  timestamp: BigInt!
+}
